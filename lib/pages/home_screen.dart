@@ -14,8 +14,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //* -----------------------------------------------------------------------------
-  List<String> todoLists= [];
-  final TextEditingController todoController = TextEditingController();
+  List<dynamic> todoLists = [];
+  final TextEditingController activityController = TextEditingController();
+  final TextEditingController fromController = TextEditingController();
+  final TextEditingController toController = TextEditingController();
+
+  void addTodo() async {
+    String activity = activityController.text.trim();
+    String from = fromController.text.trim();
+    String to = toController.text.trim();
+    if (activity.isNotEmpty && from.isNotEmpty && to.isNotEmpty) {
+      setState(() {
+        todoLists.add({'activity': activity, 'from': from, 'to': to});
+      });
+      activityController.clear();
+      fromController.clear();
+      toController.clear();
+    }
+  }
+
   //* -----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
@@ -31,14 +48,27 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               // header section
-              constraints.maxWidth >= kDeviceWidth 
-                ? HeaderDesktop()
-                : HeaderMobile(),
+              constraints.maxWidth >= kDeviceWidth
+                  ? HeaderDesktop()
+                  : HeaderMobile(
+                      onTap: addTodo,
+                      activityController: activityController,
+                      fromController: fromController,
+                      toController: toController,
+                    ),
 
               // main section
-              constraints.maxWidth >= kDeviceWidth 
-                ? MainDesktop(listDDatas: todoLists, controller: todoController,)
-                : MainMobile(listMDatas: todoLists,),
+              constraints.maxWidth >= kDeviceWidth
+                  ? MainDesktop(
+                      listDDatas: todoLists,
+                      onTap: addTodo,
+                      activityController: activityController,
+                      fromController: fromController,
+                      toController: toController,
+                    )
+                  : MainMobile(
+                      listMDatas: todoLists,
+                    ),
             ],
           ),
         ),

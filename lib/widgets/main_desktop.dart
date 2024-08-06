@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:todo/widgets/text_field.dart';
 
 class MainDesktop extends StatelessWidget {
-  final List<String> listDDatas;
-  final TextEditingController controller;
+  final List<dynamic> listDDatas;
+  final TextEditingController activityController;
+  final TextEditingController fromController;
+  final TextEditingController toController;
+  final VoidCallback onTap;
   const MainDesktop(
-      {super.key, required this.listDDatas, required this.controller});
+      {super.key,
+      required this.listDDatas,
+      required this.onTap, required this.activityController, required this.fromController, required this.toController});
 
   @override
   Widget build(BuildContext context) {
@@ -20,56 +26,23 @@ class MainDesktop extends StatelessWidget {
           color: Colors.white),
       child: Row(
         children: [
+          // * Text Field Area
           Expanded(
             flex: 2,
             child: Container(
               height: screenHeight - 60,
-              padding: EdgeInsets.symmetric(horizontal: screenWidth/30, vertical: 30.0),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth / 30, vertical: 30.0),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                   ),
                   color: Color.fromARGB(255, 238, 242, 244)),
-              child: Column(
-                children: [
-                  const Text('Add Your Task Here', style: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600
-                  ),),
-                  const SizedBox(
-                    height: 45.0,
-                  ),
-                  TextField(
-                    controller: controller,
-                    autofocus: true,
-                    cursorWidth: 1,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10.0),
-                      label: Text(
-                        'Write todo',
-                        style: TextStyle(
-                            fontSize: 13.0, color: Colors.blueGrey.shade300),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  OutlinedButton(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 19, 160, 225)),
-                      child: const Text(
-                        'add todo',
-                        style: TextStyle(color: Colors.white),
-                      ))
-                ],
-              ),
+              child: MyTextField(onTap: onTap, activityController: activityController, fromController: fromController, toController: toController, controller: null,),
             ),
           ),
+
+          //* Todo List Area
           Expanded(
             flex: 3,
             child: Container(
@@ -88,8 +61,13 @@ class MainDesktop extends StatelessWidget {
                             size: 19,
                           ),
                           title: Text(
-                            listDDatas[index],
+                            listDDatas[index]['activity'],
                             style: TextStyle(fontSize: 14.0),
+                          ),
+                          subtitle: Text(
+                            'From ${listDDatas[index]['from']} to ${listDDatas[index]['to']}',
+                            style:
+                                TextStyle(fontSize: 11, color: Colors.black38),
                           ),
                           trailing: Icon(
                             Icons.delete_outline,
