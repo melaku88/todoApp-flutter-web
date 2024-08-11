@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/pages/home_screen.dart';
+import 'package:todo/pages/login_screen.dart';
 
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true
       ),
-      home: HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }
