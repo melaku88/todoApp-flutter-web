@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:todo/api/api.dart';
 import 'package:todo/constants/device.dart';
+import 'package:todo/utilis/snackbar.dart';
 import 'package:todo/widgets/header_desktop.dart';
 import 'package:todo/widgets/header_mobile.dart';
 import 'package:todo/widgets/main_desktop.dart';
 import 'package:todo/widgets/main_mobile.dart';
+import 'package:todo/widgets/text_field.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,22 +19,33 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //* -----------------------------------------------------------------------------
-  List<dynamic> todoLists = [];
+  List<String> todoLists = [];
+  bool isSending = false;
   final TextEditingController activityController = TextEditingController();
-  final TextEditingController fromController = TextEditingController();
-  final TextEditingController toController = TextEditingController();
 
   void addTodo() async {
-    String activity = activityController.text.trim();
-    String from = fromController.text.trim();
-    String to = toController.text.trim();
-    if (activity.isNotEmpty && from.isNotEmpty && to.isNotEmpty) {
+    setState(() {
+      isSending = true;
+    });
+    try {
+      if (activityController.text.trim().isNotEmpty) {
+        APIs.firestore
+            .collection('Todos')
+            .doc(APIs.user.uid)
+            .collection(DateFormat('dd MMMM yyyy').format(DateTime.now()))
+            .add({'activity': activityController.text.trim()}).then((_) {
+          setState(() {
+            isSending = false;
+          });
+          // Navigator.pop(context);
+          activityController.clear();
+        });
+      }
+    } on FirebaseException catch (e) {
       setState(() {
-        todoLists.add({'activity': activity, 'from': from, 'to': to});
+        isSending = false;
       });
-      activityController.clear();
-      fromController.clear();
-      toController.clear();
+      Snackbars.snackBarError(context, e.code);
     }
   }
 
@@ -53,8 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   : HeaderMobile(
                       onTap: addTodo,
                       activityController: activityController,
-                      fromController: fromController,
-                      toController: toController,
+                    
+                      isSending: isSending,
                     ),
 
               // main section
@@ -63,8 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       listDDatas: todoLists,
                       onTap: addTodo,
                       activityController: activityController,
-                      fromController: fromController,
-                      toController: toController,
+                      isSending: isSending,
                     )
                   : MainMobile(
                       listMDatas: todoLists,
@@ -72,6 +87,32 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+        floatingActionButton: constraints.maxWidth <= kDeviceWidth
+            ? FloatingActionButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          height: 285,
+                          padding: EdgeInsets.only(
+                              top: 20.0,
+                              left: 15.0,
+                              right: 15.0,
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: MyTextField(
+                            onTap: addTodo,
+                            activityController: activityController,
+                            isSending: isSending,
+                          ),
+                        );
+                      });
+                },
+                shape: CircleBorder(),
+                backgroundColor: Color.fromARGB(255, 18, 116, 162),
+                child: Icon(Icons.add, color: Colors.white),
+              )
+            : null,
       );
     });
   }

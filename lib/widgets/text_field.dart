@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
-class MyTextField extends StatelessWidget {
+class MyTextField extends StatefulWidget {
   final TextEditingController activityController;
-  final TextEditingController fromController;
-  final TextEditingController toController;
+  final bool isSending;
   final VoidCallback onTap;
-  const MyTextField({super.key, required this.onTap, required this.activityController, required this.fromController, required this.toController, required controller});
+  const MyTextField({super.key, required this.onTap, required this.activityController, required this.isSending});
 
+  @override
+  State<MyTextField> createState() => _MyTextFieldState();
+}
+
+class _MyTextFieldState extends State<MyTextField> {
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +25,7 @@ class MyTextField extends StatelessWidget {
           height: 15.0,
         ),
         TextField(
-          controller: activityController,
+          controller: widget.activityController,
           cursorWidth: 1,
           decoration: InputDecoration(
             contentPadding:
@@ -34,43 +39,24 @@ class MyTextField extends StatelessWidget {
 
         SizedBox(height: 10.0,),
 
-        TextField(
-          controller: fromController,
-          cursorWidth: 1,
-          keyboardType: TextInputType.datetime,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
-            label: Text(
-              'From (clock)',
-              style: TextStyle(fontSize: 13.0, color: Colors.blueGrey.shade300),
-            ),
-          ),
-        ),
-
-        SizedBox(height: 10.0,),
-
-        TextField(
-          controller: toController,
-          cursorWidth: 1,
-          keyboardType: TextInputType.datetime,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
-            label: Text(
-              'To (clock)',
-              style: TextStyle(fontSize: 13.0, color: Colors.blueGrey.shade300),
-            ),
-          ),
-        ),
         const SizedBox(
           height: 20.0,
         ),
         OutlinedButton(
-            onPressed: onTap,
+            onPressed: widget.onTap,
             style: OutlinedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 19, 160, 225)),
-            child: const Text(
+            child: widget.isSending 
+              ? Container(
+                height: 20,
+                width: 20,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.0,
+                ),
+              )
+              : const Text(
               'add todo',
               style: TextStyle(color: Colors.white),
             ))

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MainMobile extends StatelessWidget {
-  final List<dynamic> listMDatas;
+  final List<String> listMDatas;
   const MainMobile({super.key, required this.listMDatas});
 
   @override
@@ -24,14 +24,6 @@ class MainMobile extends StatelessWidget {
                   leading: Icon(
                     Icons.select_all,
                     size: 19,
-                  ),
-                  title: Text(
-                    listMDatas[index]['activity'],
-                    style: TextStyle(fontSize: 14.0),
-                  ),
-                  subtitle: Text(
-                    'From ${listMDatas[index]['from']} to ${listMDatas[index]['to']}',
-                    style: TextStyle(fontSize: 11, color: Colors.black38),
                   ),
                   trailing: Icon(
                     Icons.delete_outline,

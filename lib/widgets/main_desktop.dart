@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:todo/widgets/text_field.dart';
 
 class MainDesktop extends StatelessWidget {
-  final List<dynamic> listDDatas;
+  final List<String> listDDatas;
   final TextEditingController activityController;
-  final TextEditingController fromController;
-  final TextEditingController toController;
+  final bool isSending;
   final VoidCallback onTap;
   const MainDesktop(
       {super.key,
       required this.listDDatas,
-      required this.onTap, required this.activityController, required this.fromController, required this.toController});
+      required this.onTap, required this.activityController, required this.isSending});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class MainDesktop extends StatelessWidget {
                     topLeft: Radius.circular(20.0),
                   ),
                   color: Color.fromARGB(255, 238, 242, 244)),
-              child: MyTextField(onTap: onTap, activityController: activityController, fromController: fromController, toController: toController, controller: null,),
+              child: MyTextField(onTap: onTap, activityController: activityController, isSending: isSending,),
             ),
           ),
 
@@ -59,15 +58,6 @@ class MainDesktop extends StatelessWidget {
                           leading: Icon(
                             Icons.select_all,
                             size: 19,
-                          ),
-                          title: Text(
-                            listDDatas[index]['activity'],
-                            style: TextStyle(fontSize: 14.0),
-                          ),
-                          subtitle: Text(
-                            'From ${listDDatas[index]['from']} to ${listDDatas[index]['to']}',
-                            style:
-                                TextStyle(fontSize: 11, color: Colors.black38),
                           ),
                           trailing: Icon(
                             Icons.delete_outline,
