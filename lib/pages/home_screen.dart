@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //* -----------------------------------------------------------------------------
   List<String> todoLists = [];
   bool isSending = false;
+  final user = APIs.auth.currentUser;
   final TextEditingController activityController = TextEditingController();
 
   void addTodo() async {
@@ -29,17 +30,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     try {
       if (activityController.text.trim().isNotEmpty) {
-        APIs.firestore
+        await FirebaseFirestore.instance
             .collection('Todos')
-            .doc(APIs.user.uid)
+            .doc(user!.uid)
             .collection(DateFormat('dd MMMM yyyy').format(DateTime.now()))
-            .add({'activity': activityController.text.trim()}).then((_) {
-          setState(() {
-            isSending = false;
-          });
-          // Navigator.pop(context);
-          activityController.clear();
+            .add({'activity': activityController.text.trim()});
+        setState(() {
+          isSending = false;
         });
+        // Navigator.pop(context);
+        activityController.clear();
+      } else {
+        setState(() {
+          isSending = false;
+        });
+        Snackbars.snackBarError(context, 'Please wire a todo activity');
       }
     } on FirebaseException catch (e) {
       setState(() {
@@ -69,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   : HeaderMobile(
                       onTap: addTodo,
                       activityController: activityController,
-                    
                       isSending: isSending,
                     ),
 
