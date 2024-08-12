@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/constants/device.dart';
 import 'package:todo/widgets/header_desktop.dart';
 import 'package:todo/widgets/header_mobile.dart';
@@ -24,9 +25,26 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         todoLists.add(activityController.text.trim());
       });
+      // Obtain shared preferences.
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList('todos', todoLists);
+
       activityController.clear();
-      
     }
+  }
+
+  getTodos()async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? todos = prefs.getStringList('todos');
+    setState(() {
+      todoLists = todos ?? [];
+    });
+  }
+
+  @override
+  void initState() {
+    getTodos();
+    super.initState();
   }
 
   //* -----------------------------------------------------------------------------

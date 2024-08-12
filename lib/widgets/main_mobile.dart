@@ -15,7 +15,7 @@ class MainMobile extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(17.0), topRight: Radius.circular(17.0)),
-          color: Color.fromARGB(255, 203, 230, 243)),
+          color: Color.fromARGB(255, 238, 242, 244)),
       child: listMDatas.isNotEmpty
           ? ListView.builder(
               itemCount: listMDatas.length,
