@@ -25,6 +25,7 @@ class MainMobile extends StatelessWidget {
                     Icons.select_all,
                     size: 19,
                   ),
+                  title: Text(listMDatas[index]),
                   trailing: Icon(
                     Icons.delete_outline,
                     size: 18.0,

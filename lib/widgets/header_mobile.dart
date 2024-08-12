@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo/api/api.dart';
 import 'package:todo/widgets/text_field.dart';
 
 class HeaderMobile extends StatelessWidget {
@@ -74,22 +73,9 @@ class HeaderMobile extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.black26, fontWeight: FontWeight.bold),
                   ),
+                  SizedBox(width: 10,)
                 ],
               ),
-
-              TextButton.icon(
-                onPressed: () {
-                  APIs.logout(context);
-                },
-                label: Icon(
-                  Icons.logout,
-                  size: 15.0,
-                  color: Colors.white,
-                ),
-                style: TextButton.styleFrom(
-                    shape: CircleBorder(),
-                    backgroundColor: Color.fromARGB(255, 18, 113, 156)),
-              )
             ],
           )
         ],

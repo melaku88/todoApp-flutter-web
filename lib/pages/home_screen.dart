@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:todo/api/api.dart';
 import 'package:todo/constants/device.dart';
-import 'package:todo/utilis/snackbar.dart';
 import 'package:todo/widgets/header_desktop.dart';
 import 'package:todo/widgets/header_mobile.dart';
 import 'package:todo/widgets/main_desktop.dart';
@@ -21,36 +17,15 @@ class _HomeScreenState extends State<HomeScreen> {
   //* -----------------------------------------------------------------------------
   List<String> todoLists = [];
   bool isSending = false;
-  final user = APIs.auth.currentUser;
   final TextEditingController activityController = TextEditingController();
 
   void addTodo() async {
-    setState(() {
-      isSending = true;
-    });
-    try {
-      if (activityController.text.trim().isNotEmpty) {
-        await FirebaseFirestore.instance
-            .collection('Todos')
-            .doc(user!.uid)
-            .collection(DateFormat('dd MMMM yyyy').format(DateTime.now()))
-            .add({'activity': activityController.text.trim()});
-        setState(() {
-          isSending = false;
-        });
-        // Navigator.pop(context);
-        activityController.clear();
-      } else {
-        setState(() {
-          isSending = false;
-        });
-        Snackbars.snackBarError(context, 'Please wire a todo activity');
-      }
-    } on FirebaseException catch (e) {
+    if (activityController.text.trim().isNotEmpty) {
       setState(() {
-        isSending = false;
+        todoLists.add(activityController.text.trim());
       });
-      Snackbars.snackBarError(context, e.code);
+      activityController.clear();
+      
     }
   }
 

@@ -59,6 +59,7 @@ class MainDesktop extends StatelessWidget {
                             Icons.select_all,
                             size: 19,
                           ),
+                          title: Text(listDDatas[index]),
                           trailing: Icon(
                             Icons.delete_outline,
                             size: 18.0,
