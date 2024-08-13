@@ -31,7 +31,7 @@ class _MainMobileState extends State<MainMobile> {
                     Icons.select_all,
                     size: 19,
                   ),
-                  title: Text(widget.listMDatas[index]),
+                  title: Text('${index + 1}. ${widget.listMDatas[index]}'),
                   trailing: InkWell(
                     onTap: () {
                       showModalBottomSheet(
@@ -100,12 +100,12 @@ class _MainMobileState extends State<MainMobile> {
                     style: TextStyle(
                         color:
                             Color.fromARGB(255, 12, 112, 158).withOpacity(0.5),
-                        fontSize: 22.0),
+                        fontSize: 19.0),
                   ),
                   Text(
                     'Press plus sign & add your todo now.',
                     style: TextStyle(
-                        color: Colors.black38, fontStyle: FontStyle.italic),
+                        color: Colors.black38, fontStyle: FontStyle.italic, fontSize: 12),
                   )
                 ],
               ),

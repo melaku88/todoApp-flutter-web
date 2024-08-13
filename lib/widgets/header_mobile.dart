@@ -5,7 +5,11 @@ class HeaderMobile extends StatelessWidget {
   final TextEditingController activityController;
   final bool isSending;
   final VoidCallback onTap;
-  const HeaderMobile({super.key, required this.onTap, required this.activityController, required this.isSending});
+  const HeaderMobile(
+      {super.key,
+      required this.onTap,
+      required this.activityController,
+      required this.isSending});
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +28,28 @@ class HeaderMobile extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 13),
+                    fontSize: 19),
               ),
               Text(
                 'APP',
                 style: TextStyle(
                     color: Colors.amber,
                     fontWeight: FontWeight.bold,
-                    fontSize: 13),
+                    fontSize: 19),
               ),
               TextButton.icon(
                 onPressed: () {
-                  showModalBottomSheet(
+                  showDialog(
                       context: context,
                       builder: (context) {
-                        return Padding(
-                          padding: MediaQuery.of(context).viewInsets,
+                        return Dialog(
                           child: Container(
-                            height: 150,
-                            padding: EdgeInsets.only(top: 20.0, left: 15.0, right: 15.0,),
-                            child: MyTextField( onTap:  onTap, activityController: activityController, isSending: isSending, ),
+                            height: 162,
+                            padding: EdgeInsets.all(15.0),
+                            child: MyTextField(
+                                onTap: onTap,
+                                activityController: activityController,
+                                isSending: isSending),
                           ),
                         );
                       });
@@ -76,7 +82,9 @@ class HeaderMobile extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.black26, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(width: 10,)
+                  SizedBox(
+                    width: 10,
+                  )
                 ],
               ),
             ],

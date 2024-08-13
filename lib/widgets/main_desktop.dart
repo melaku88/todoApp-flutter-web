@@ -71,7 +71,8 @@ class _MainDesktopState extends State<MainDesktop> {
                             Icons.select_all,
                             size: 19,
                           ),
-                          title: Text(widget.listDDatas[index]),
+                          title:
+                              Text('${index + 1}. ${widget.listDDatas[index]}'),
                           trailing: InkWell(
                             onTap: () {
                               showModalBottomSheet(
@@ -81,20 +82,25 @@ class _MainDesktopState extends State<MainDesktop> {
                                       height: 105,
                                       padding: EdgeInsets.all(20.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                               'Do you want to delete "${widget.listDDatas[index]}"?'),
-                                              SizedBox(height: 10.0,),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               TextButton(
                                                   onPressed: () async {
                                                     setState(() {
                                                       // ignore: collection_methods_unrelated_type
-                                                      widget.listDDatas
-                                                          .remove(widget.listDDatas[index]);
+                                                      widget.listDDatas.remove(
+                                                          widget.listDDatas[
+                                                              index]);
                                                     });
                                                     // Obtain shared preferences.
                                                     final SharedPreferences

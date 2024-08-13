@@ -33,6 +33,23 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void addMTodo() async {
+    if (activityController.text.trim().isNotEmpty) {
+      setState(() {
+        todoLists.add(activityController.text.trim());
+      });
+      // Obtain shared preferences.
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList('todos', todoLists);
+
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+      activityController.clear();
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   getTodos() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String>? todos = prefs.getStringList('todos');
@@ -65,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
               constraints.maxWidth >= kDeviceWidth
                   ? HeaderDesktop()
                   : HeaderMobile(
-                      onTap: addTodo,
+                      onTap: addMTodo,
                       activityController: activityController,
                       isSending: isSending,
                     ),
@@ -85,32 +102,32 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         floatingActionButton: constraints.maxWidth <= kDeviceWidth
-            ? FloatingActionButton(
+            ? OutlinedButton(
                 onPressed: () {
-                  showModalBottomSheet(
+                  showDialog(
                       context: context,
                       builder: (context) {
-                        return Padding(
-                          padding: MediaQuery.of(context).viewInsets,
+                        return Dialog(
                           child: Container(
-                            height: 150,
-                            padding: EdgeInsets.only(
-                              top: 20.0,
-                              left: 15.0,
-                              right: 15.0,
-                            ),
+                            height: 162,
+                            padding: EdgeInsets.all(15.0),
                             child: MyTextField(
-                              onTap: addTodo,
-                              activityController: activityController,
-                              isSending: isSending,
-                            ),
+                                onTap: addMTodo,
+                                activityController: activityController,
+                                isSending: isSending),
                           ),
                         );
                       });
                 },
-                shape: CircleBorder(),
-                backgroundColor: Color.fromARGB(255, 18, 116, 162),
-                child: Icon(Icons.add, color: Colors.white),
+                style: OutlinedButton.styleFrom(
+                    shape: CircleBorder(),
+                    side: BorderSide(color: Colors.transparent),
+                    backgroundColor: const Color.fromARGB(255, 19, 127, 177)),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 18.0,
+                ),
               )
             : null,
       );
