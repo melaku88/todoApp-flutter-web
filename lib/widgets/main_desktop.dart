@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/widgets/text_field.dart';
 
-class MainDesktop extends StatelessWidget {
+class MainDesktop extends StatefulWidget {
   final List<String> listDDatas;
   final TextEditingController activityController;
   final bool isSending;
@@ -9,8 +10,15 @@ class MainDesktop extends StatelessWidget {
   const MainDesktop(
       {super.key,
       required this.listDDatas,
-      required this.onTap, required this.activityController, required this.isSending});
+      required this.onTap,
+      required this.activityController,
+      required this.isSending});
 
+  @override
+  State<MainDesktop> createState() => _MainDesktopState();
+}
+
+class _MainDesktopState extends State<MainDesktop> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -37,7 +45,11 @@ class MainDesktop extends StatelessWidget {
                     topLeft: Radius.circular(20.0),
                   ),
                   color: Color.fromARGB(255, 238, 242, 244)),
-              child: MyTextField(onTap: onTap, activityController: activityController, isSending: isSending,),
+              child: MyTextField(
+                onTap: widget.onTap,
+                activityController: widget.activityController,
+                isSending: widget.isSending,
+              ),
             ),
           ),
 
@@ -50,19 +62,69 @@ class MainDesktop extends StatelessWidget {
                   borderRadius:
                       BorderRadius.only(topRight: Radius.circular(20.0)),
                   color: Color.fromARGB(255, 203, 230, 243)),
-              child: listDDatas.isNotEmpty
+              child: widget.listDDatas.isNotEmpty
                   ? ListView.builder(
-                      itemCount: listDDatas.length,
+                      itemCount: widget.listDDatas.length,
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading: Icon(
                             Icons.select_all,
                             size: 19,
                           ),
-                          title: Text(listDDatas[index]),
-                          trailing: Icon(
-                            Icons.delete_outline,
-                            size: 18.0,
+                          title: Text(widget.listDDatas[index]),
+                          trailing: InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return Container(
+                                      height: 105,
+                                      padding: EdgeInsets.all(20.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                              'Do you want to delete "${widget.listDDatas[index]}"?'),
+                                              SizedBox(height: 10.0,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              TextButton(
+                                                  onPressed: () async {
+                                                    setState(() {
+                                                      // ignore: collection_methods_unrelated_type
+                                                      widget.listDDatas
+                                                          .remove(widget.listDDatas[index]);
+                                                    });
+                                                    // Obtain shared preferences.
+                                                    final SharedPreferences
+                                                        prefs =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    await prefs.setStringList(
+                                                        'todos',
+                                                        widget.listDDatas);
+                                                  },
+                                                  child: Text('delete')),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('Cancel')),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: Icon(
+                              Icons.delete_outline,
+                              size: 18.0,
+                            ),
                           ),
                         );
                       })

@@ -38,10 +38,13 @@ class HeaderMobile extends StatelessWidget {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return Container(
-                          height: 285,
-                          padding: EdgeInsets.only(top: 20.0, left: 15.0, right: 15.0, bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: MyTextField( onTap:  onTap, activityController: activityController, isSending: isSending, ),
+                        return Padding(
+                          padding: MediaQuery.of(context).viewInsets,
+                          child: Container(
+                            height: 150,
+                            padding: EdgeInsets.only(top: 20.0, left: 15.0, right: 15.0,),
+                            child: MyTextField( onTap:  onTap, activityController: activityController, isSending: isSending, ),
+                          ),
                         );
                       });
                 },

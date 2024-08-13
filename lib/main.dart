@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/pages/home_screen.dart';
 
-void main()async{
+void main() {
   runApp(MyApp());
 }
 
@@ -13,9 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'todoAPP',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(
-        useMaterial3: true
-      ),
+      theme: ThemeData.light(useMaterial3: true),
       home: HomeScreen(),
     );
   }

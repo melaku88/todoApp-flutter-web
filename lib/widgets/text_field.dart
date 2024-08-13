@@ -16,14 +16,6 @@ class _MyTextFieldState extends State<MyTextField> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          'Add Your Task Here',
-          style: TextStyle(
-              color: Colors.black38, fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        const SizedBox(
-          height: 15.0,
-        ),
         TextField(
           controller: widget.activityController,
           cursorWidth: 1,
@@ -31,7 +23,7 @@ class _MyTextFieldState extends State<MyTextField> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
             label: Text(
-              'Activity',
+              'Write todo here....',
               style: TextStyle(fontSize: 13.0, color: Colors.blueGrey.shade300),
             ),
           ),
@@ -59,7 +51,9 @@ class _MyTextFieldState extends State<MyTextField> {
               : const Text(
               'add todo',
               style: TextStyle(color: Colors.white),
-            ))
+            )),
+
+            SizedBox(height: 20.0,)
       ],
     );
   }

@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  getTodos()async{
+  getTodos() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String>? todos = prefs.getStringList('todos');
     setState(() {
@@ -90,17 +90,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return Container(
-                          height: 285,
-                          padding: EdgeInsets.only(
+                        return Padding(
+                          padding: MediaQuery.of(context).viewInsets,
+                          child: Container(
+                            height: 150,
+                            padding: EdgeInsets.only(
                               top: 20.0,
                               left: 15.0,
                               right: 15.0,
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: MyTextField(
-                            onTap: addTodo,
-                            activityController: activityController,
-                            isSending: isSending,
+                            ),
+                            child: MyTextField(
+                              onTap: addTodo,
+                              activityController: activityController,
+                              isSending: isSending,
+                            ),
                           ),
                         );
                       });
